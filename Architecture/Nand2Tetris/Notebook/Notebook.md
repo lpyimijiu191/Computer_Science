@@ -34,33 +34,33 @@ Boolean function——A function that operates on **boolean variables**, and ret
 
 由于在这里的关注重点是logic，因此类似于电路一样physical的东西（如下图所示），暂不关注。
 
-![image-20250321131734452](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321131734452.png)
+![image-20250321131734452](.\images\image-20250321131734452.png)
 
 此外，在本书中，Nand门被认为是原始的逻辑结构，所以没有必要去构建它：只要你在HDL程序中使用Nand门，仿真器就会自动地调用其内置的tools/builtIn/Nand.hdl工 具。
 
-![image-20250321150447067](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321150447067.png)
+![image-20250321150447067](.\images\image-20250321150447067.png)
 
-![image-20250321131917321](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321131917321.png)
+![image-20250321131917321](.\images\image-20250321131917321.png)
 
 And3（乃至Andn），可以用2个And门来实现。
 
-![image-20250321132001010](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321132001010.png)
+![image-20250321132001010](.\images\image-20250321132001010.png)
 
-![image-20250321132015367](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321132015367.png)
+![image-20250321132015367](.\images\image-20250321132015367.png)
 
 首先遇到需要思考的是Xor。
 
-![image-20250321132046977](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321132046977.png)
+![image-20250321132046977](.\images\image-20250321132046977.png)
 
-![image-20250321132226731](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321132226731.png)
+![image-20250321132226731](.\images\image-20250321132226731.png)
 
-![image-20250321132346519](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321132346519.png)MUX这个东西见到的不是很多，看了[这篇博客](https://blog.csdn.net/vivid117/article/details/100747939)就找到了MUX（这里只讨论**2路选择MUX**)，如下图所示。
+![image-20250321132346519](.\images\image-20250321132346519.png)MUX这个东西见到的不是很多，看了[这篇博客](https://blog.csdn.net/vivid117/article/details/100747939)就找到了MUX（这里只讨论**2路选择MUX**)，如下图所示。
 
-![image-20250321140321091](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321140321091.png)
+![image-20250321140321091](.\images\image-20250321140321091.png)
 
 DMUX也是同理。
 
-![image-20250321141914505](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321141914505.png)
+![image-20250321141914505](.\images\image-20250321141914505.png)
 
 ![image-20250321231353381](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321231353381.png)
 
@@ -68,11 +68,11 @@ DMUX也是同理。
 
 至于MUX、DMUX的作用，可以看下图。
 
-![image-20250321231835228](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321231835228.png)
+![image-20250321231835228](.\images\image-20250321231835228.png)
 
 在本章的最后，要学会使用Hack chip set API。例如，当我们不知道HDL语言中的输入、输出引脚名称时，可以随时查阅。
 
-![image-20250321232625265](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250321232625265.png)
+![image-20250321232625265](.\images\image-20250321232625265.png)
 
 #### Actual Hardware Construction
 
