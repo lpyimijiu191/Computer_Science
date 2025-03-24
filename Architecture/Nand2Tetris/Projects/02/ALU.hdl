@@ -41,5 +41,24 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    
+    Mux16(a = x,b = false,sel = zx,out = x1);
+    Not16(in = x1,out = notx1);
+    Mux16(a = x1,b = notx1,sel = nx,out = x2);
+    Mux16(a = y,b = false,sel = zy,out = y1);
+    Not16(in = y1,out = noty1);
+    Mux16(a = y1,b = noty1,sel = ny,out = y2);
+
+    Add16(a = x2,b = y2,out = Addxy);
+    And16(a = x2,b = y2,out = Andxy);
+    Mux16(a = Andxy,b = Addxy,sel = f,out = fxy);
+    Not16(in = fxy,out = Notfxy);
+    //计组知识，在补码中最高位就是符号位。
+    Mux16(a = fxy,b = Notfxy,sel = no,out = out,out[0..7] = out1,out[8..15] = out2,out[15] = ng);
+
+    //看out是否所有位全为0。
+    //前面只设计了Or8Way，没有Or16Way。
+    Or8Way(in = out1,out = tmp1);
+    Or8Way(in = out2,out = tmp2);
+    Or(a = tmp1,b = tmp2,out = Notzr);
+    Not(in = Notzr,out = zr);
 }
