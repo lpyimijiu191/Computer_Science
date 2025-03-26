@@ -2,11 +2,18 @@
 
 课程目的：带你从0开始构建计算机系统。
 
-前置需求：具备基本的编程能力（任何一门编程语言）。
+前置需求：
 
-完成项目所需要的工具：[官网](https://www.nand2tetris.org/software)给了Online IDE，其内部集成了.tst和.cmp，类似于OJ。当然，也可以下载这个IDE的Package，并且将.tst和.cmp文件部署到本地。
+- 具备基本的编程能力（任何一门编程语言）。
 
-在写笔记前先要声明，本课程的Lecture、课本已经非常全面。为避免我所作的笔记太过抄书化，我就专注于搭建一个框架，从而在我回顾时能高效地get到重点。至于具体的Projects，我单独放到了对应的文件夹。
+完成项目所需要的工具：
+
+- [官网](https://www.nand2tetris.org/software)给了Online IDE，其内部集成了.tst和.cmp，类似于OJ。当然，也可以下载这个IDE的Package，并且将.tst和.cmp文件部署到本地
+- [nand2teris的论坛](http://nand2tetris-questions-and-answers-forum.52.s1.nabble.com/)
+
+在写笔记前先要声明，本课程的Lecture、课本已经非常全面。为避免我所作的笔记太过抄书化，我就专注于搭建一个框架，从而在我回顾时能高效地get到重点。如有错误、不足之处会陆续优化，还望谅解。
+
+至于具体的Projects，放到了对应的文件夹。
 
 ## Boolean Logic
 
@@ -108,5 +115,95 @@ DMUX也是同理。
 
 ![image](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\9300b3b0dfbd45418c3f9b5e6d975804.png)
 
+​	本章的难点之一在于ALU的设计。当然，本章我们设计的ALU主要是围绕该课程的Hack ALU，如下图所示。
 
+![image-20250324235422561](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250324235422561.png)
+
+至于Hack ALU和我们在实际生产、应用中的ALU之间有什么区别、联系，可以回顾下[视频课的答疑环节](https://www.youtube.com/watch?v=OBCWuMM7ZHc&list=PLrDd_kMiAuNmSb-CKWQqq9oBFN_KNMTaI&index=19)。
+
+## Memory
+
+关于Project3中的第一个Bit.hdl，也指的是Single-Bit Register。下图是关于1-Bit register的黑盒，以及各个时钟周期的变化。![image-20250325165505414](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250325165505414.png)
+
+在Project3-Bit.hdl的设计中，我发现了一个奇怪的东西——DFF。
+
+![image-20250325170304238](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250325170304238.png)
+
+上图也说了**We have to realize a "loading" behavior and a "storing" behavior...**，并且Mux只有选择的作用，那么显然这个DFF在1-Bit register里就是“加载新值”or”存储当前值“的关键部件。
+
+理解了1-Bit register这个东西的大概流程、DFF在其中的作用之后，再来深挖下DFF这个新鲜东西。
+
+DFF（简称D）称作”触发器“，本质是一种时序逻辑原件，在时钟上升沿（或下降沿）捕获输入端的值，并将其保存到输出端，直到下一个时钟边沿到来。DFF的关键特性：
+
+- **同步更新**：输出仅在时钟边沿变化，确保数据更新与时钟同步。
+- **状态保持**：在时钟边沿之间，输出保持稳定，不受输入变化的影响。
+
+> [!CAUTION]
+>
+> 在我的学习过程中，看到了这样1个设计思路：
+>
+> ```
+> Mux(a=out, b=in, sel=load, out=muxOut);
+> DFF(in=muxOut, clk=clk, out=out);
+> ```
+>
+> 为啥这个不对呢？
+>
+> 答：这会导致一种现象，称为”仿真震荡“。
+>
+> ![image-20250325173455075](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250325173455075.png)
+>
+> 总而言之，仿真震荡可以理解为**组合逻辑环路导致信号值无限递归计算**。
+>
+> 那如何设计才能避免呢？
+>
+> ![image-20250325173638917](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250325173638917.png)
+>
+> 而在实际的芯片设计中，有个设计准则——**任何反馈路径必须经过时序元件（如 DFF），否则必然导致仿真震荡或电路不稳定**。
+>
+> ![image-20250325173649219](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250325173649219.png)
+
+Project3-Register.hdl的设计可以完全基于Bit.hdl，如下图所示。
+
+![image-20250325174900899](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250325174900899.png)
+
+而RAMn.hdl的设计也可以完全基于Register.hdl，如下图所示。
+
+![image-20250325175059392](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250325175059392.png)
+
+如果只是停留在Abstraction这一阶段，那看起来非常简单，像是从上到下叠在一起。但如果想要真正地Implementation，各个register到底该如何组合到一起是一门学问。
+
+![image-20250326213002761](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250326213002761.png)
+
+
+
+接下来是PC。lecture里画的太简洁了根本无从下手，于是我找了下面这张图。
+
+![HDL API & Gate Design](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\pc.png)
+
+> [!IMPORTANT]
+>
+> 但为啥优先级要设置为inc>load>reset呢？如果按照下图这样的分支结构，难道第一优先级不应该是reset吗？
+>
+> ![image-20250326222205075](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250326222205075.png)
+>
+> 我在[stackoverflow](https://stackoverflow.com/questions/15034037/trying-to-build-a-pc-counter-for-the-nand2tetris-book-but-im-having-some-tro)上也看见了类似的问题。
+>
+> 答：没有错，第一优先级确实是reset。但在设计上，它就应该在最后一个。举个极端的例子，若reset==0，则经过前面的inc、load后取的值无论是什么，经过reset后的取值都是0。
+>
+> 事实上，在多路选择器链中，最后一个Mux的选择器具有最高优先级，因为它位于链的末端，极端情况下甚至可以覆盖前面的所有选择。
+>
+> ![image-20250326221807868](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250326221807868.png)
+
+
+
+
+
+## Machine Language
+
+
+
+**The syntax of Machine Languages varies across computers.**
+
+![image-20250325160232864](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250325160232864.png)
 

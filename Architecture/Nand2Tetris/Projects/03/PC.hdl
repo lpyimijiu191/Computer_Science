@@ -14,5 +14,14 @@ CHIP PC {
     OUT out[16];
     
     PARTS:
-    //// Replace this comment with your code.
+    /**
+    * 按照优先级，要依次处理inc、load、reset
+    */
+    Inc16(in = state,out = inc16);
+    // 接下来是分支结构，
+    Mux16(a = state,b = inc16,sel = inc,out = inc1);
+    Mux16(a = inc1,b = in,sel = load,out = load1);
+    Mux16(a = load1,b = false,sel = reset,out = reset1);
+    // 存储最新的状态
+    Register(in = reset1,load = true,out = out,out = state);
 }
