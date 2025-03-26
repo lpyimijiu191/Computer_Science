@@ -195,7 +195,17 @@ Project3-Register.hdl的设计可以完全基于Bit.hdl，如下图所示。
 >
 > ![image-20250326221807868](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250326221807868.png)
 
+最后是RAMn。同理，lecture中的描述太过简单。
 
+![image-20250327000809507](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\image-20250327000809507.png)
+
+![img](D:\Study\Computer_Science\Architecture\Nand2Tetris\Notebook\images\ram8.png)
+
+
+
+至此RAMn的设计基本完结。
+
+在设计RAMn这一Project中，我在论坛翻到了[一个被admin说成是way off the mark的设计方案](http://nand2tetris-questions-and-answers-forum.52.s1.nabble.com/ABOUT-RAM-td4036525.html)，感觉蛮有趣。
 
 
 
